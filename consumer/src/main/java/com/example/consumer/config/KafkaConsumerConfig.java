@@ -1,6 +1,6 @@
 package com.example.consumer.config;
 
-import com.example.consumer.dto.User;
+import com.example.consumer.dto.UserFollowers;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 
 @Configuration
-public class KafkaProducerConfig {
+public class KafkaConsumerConfig {
 
     @Value("${proje.kafka.address}")
     private String kafkaAddress;
@@ -24,18 +24,18 @@ public class KafkaProducerConfig {
     private String groupId;
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, User> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, User> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, UserFollowers> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, UserFollowers> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
     @Bean
-    public ConsumerFactory<String, User> consumerFactory() {
+    public ConsumerFactory<String, UserFollowers> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, User.class);
+        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, UserFollowers.class);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         return new DefaultKafkaConsumerFactory<>(props);

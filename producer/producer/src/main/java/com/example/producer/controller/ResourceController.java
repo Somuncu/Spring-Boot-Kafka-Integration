@@ -1,27 +1,27 @@
 package com.example.producer.controller;
 
-import com.example.producer.dto.KMessage;
+import com.example.producer.entity.User;
+import com.example.producer.dto.UserDto;
+import com.example.producer.service.KafkaSenderImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Value;
-import java.util.UUID;
 
 @RestController
-@RequestMapping("/kmessage")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ResourceController {
 
-    @Value("${proje.kafka.topic}")
-    private String topic;
+    @Autowired
+    KafkaSenderImpl kafkaSenderImpl;
 
-    private final KafkaTemplate<String, KMessage> kafkaTemplate;
-
-    @PostMapping
-    public void sendMessage(@RequestBody KMessage kMessage) {
-        kafkaTemplate.send(topic, UUID.randomUUID().toString(), kMessage);
+    @PostMapping("/send")
+    public void sendMessage(@RequestBody UserDto user) {
+        kafkaSenderImpl.sendMessage(user);
     }
 }

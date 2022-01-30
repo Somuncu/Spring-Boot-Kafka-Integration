@@ -1,16 +1,13 @@
 package com.example.producer.config;
 
-import com.example.producer.dto.KMessage;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
+import com.example.producer.dto.UserFollowers;
+import com.example.producer.entity.User;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
@@ -27,7 +24,7 @@ public class KafkaProducerConfig {
     private String groupId;
 
     @Bean
-    public KafkaTemplate<String, KMessage> kafkaTemplate() {
+    public KafkaTemplate<String, UserFollowers> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
